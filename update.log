@@ -1,0 +1,25 @@
+﻿[2026-10-27 14:22:13] === start ===
+[2026-10-27 14:22:14] flow: klineHost=https://push2his.eastmoney.com
+[2026-10-27 14:22:18] flow: clist=https://push2delay.eastmoney.com boards=496
+[2026-10-27 14:22:45] flow: etfs=0
+[2026-10-27 14:23:31] flow: flow ok=386 fail=110
+[2026-10-27 14:23:31] flow: history boards=496 dates=68 today=2026-10-26
+[2026-10-27 14:23:31] flow: DONE
+[2026-10-27 14:23:31] flowCount=380
+[2026-10-27 14:23:31] ERROR incomplete collection (380/496), skip publish
+[2026-10-27 15:50:00] === start ===
+[2026-10-27 15:50:03] flow: C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37
+[2026-10-27 15:50:03] flow:   if (!klineHost) throw new Error('kline host unavailable');
+[2026-10-27 15:50:03] flow:                         ^
+[2026-10-27 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-10-27 15:50:03] flow: Error: kline host unavailable
+[2026-10-27 15:50:03] flow:     at C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37:25
+[2026-10-27 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-10-27 15:50:03] flow: Node.js v24.19.0
+[2026-10-27 15:50:03] flowCount=496
+[2026-10-27 15:50:03] sent: zt=41 dt=22 zb=28
+[2026-10-27 15:50:09] sent: breadth fail fetch failed
+[2026-10-27 15:50:09] sent: saved C:\Users\game-netease\lobsterai\project\fundflow\sentiment.json
+[2026-10-27 15:50:09] sent: {"zt":41,"dt":22,"zb":28,"zbr":40.6,"max":5,"lb":12,"phase":"鍒嗘","score":59}
+[2026-10-27 15:50:09] export: date= 2026-10-27 market points= 30 mainline= 4 etf= 13
+[2026-10-27 15:50:09] export: bytes= 28523
