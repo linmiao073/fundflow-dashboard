@@ -9,5 +9,16 @@
   "lianban": 12,
   "phase": "分歧",
   "score": 59
+ },
+ {
+  "date": "20261028",
+  "ztCount": 72,
+  "dtCount": 5,
+  "zbCount": 69,
+  "zbr": 48.9,
+  "maxLbc": 5,
+  "lianban": 8,
+  "phase": "修复",
+  "score": 69
  }
 ]

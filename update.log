@@ -23,3 +23,29 @@
 [2026-10-27 15:50:09] sent: {"zt":41,"dt":22,"zb":28,"zbr":40.6,"max":5,"lb":12,"phase":"鍒嗘","score":59}
 [2026-10-27 15:50:09] export: date= 2026-10-27 market points= 30 mainline= 4 etf= 13
 [2026-10-27 15:50:09] export: bytes= 28523
+[2026-10-27 15:50:09] git: [main c9eca89] data: 2026-10-27 fund flow update
+[2026-10-27 15:50:09] git:  6 files changed, 1150 insertions(+), 1154 deletions(-)
+[2026-10-27 15:50:09] git:  create mode 100644 sentiment_history.json
+[2026-10-27 15:50:09] git:  create mode 100644 update.log
+[2026-10-27 15:50:09] git:  create mode 100644 update_site.ps1
+[2026-10-27 15:50:12] push main: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-10-27 15:50:12] push main:    acb610c..c9eca89  main -> main
+[2026-10-27 15:50:15] push gh-pages: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-10-27 15:50:15] push gh-pages:    acb610c..c9eca89  main -> gh-pages
+[2026-10-27 15:50:15] === done ===
+[2026-10-28 15:50:00] === start ===
+[2026-10-28 15:50:03] flow: C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37
+[2026-10-28 15:50:03] flow:   if (!klineHost) throw new Error('kline host unavailable');
+[2026-10-28 15:50:03] flow:                         ^
+[2026-10-28 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-10-28 15:50:03] flow: Error: kline host unavailable
+[2026-10-28 15:50:03] flow:     at C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37:25
+[2026-10-28 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-10-28 15:50:03] flow: Node.js v24.19.0
+[2026-10-28 15:50:03] flowCount=496
+[2026-10-28 15:50:04] sent: zt=72 dt=5 zb=69
+[2026-10-28 15:50:09] sent: breadth fail fetch failed
+[2026-10-28 15:50:09] sent: saved C:\Users\game-netease\lobsterai\project\fundflow\sentiment.json
+[2026-10-28 15:50:09] sent: {"zt":72,"dt":5,"zb":69,"zbr":48.9,"max":5,"lb":8,"phase":"淇","score":69}
+[2026-10-28 15:50:09] export: date= 2026-10-28 market points= 30 mainline= 4 etf= 13
+[2026-10-28 15:50:09] export: bytes= 28441
