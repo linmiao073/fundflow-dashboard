@@ -56,3 +56,19 @@
 [2026-10-28 15:50:16] push gh-pages: To https://github.com/linmiao073/fundflow-dashboard.git
 [2026-10-28 15:50:16] push gh-pages:    c9eca89..e00e523  main -> gh-pages
 [2026-10-28 15:50:16] === done ===
+[2026-10-29 15:50:00] === start ===
+[2026-10-29 15:50:03] flow: C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37
+[2026-10-29 15:50:03] flow:   if (!klineHost) throw new Error('kline host unavailable');
+[2026-10-29 15:50:03] flow:                         ^
+[2026-10-29 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-10-29 15:50:03] flow: Error: kline host unavailable
+[2026-10-29 15:50:03] flow:     at C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37:25
+[2026-10-29 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-10-29 15:50:03] flow: Node.js v24.19.0
+[2026-10-29 15:50:03] flowCount=496
+[2026-10-29 15:50:03] sent: zt=39 dt=41 zb=25
+[2026-10-29 15:50:09] sent: breadth fail fetch failed
+[2026-10-29 15:50:09] sent: saved C:\Users\game-netease\lobsterai\project\fundflow\sentiment.json
+[2026-10-29 15:50:09] sent: {"zt":39,"dt":41,"zb":25,"zbr":39.1,"max":4,"lb":10,"phase":"鍒嗘","score":54}
+[2026-10-29 15:50:09] export: date= 2026-10-29 market points= 30 mainline= 4 etf= 13
+[2026-10-29 15:50:09] export: bytes= 28680
