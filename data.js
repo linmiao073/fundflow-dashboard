@@ -1,5 +1,5 @@
 window.DATA = {
- "generatedAt": "2026-10-28 15:50",
+ "generatedAt": "2026-10-29 15:28",
  "date": "2026-10-28",
  "market": [
   {
@@ -1544,6 +1544,12 @@ window.DATA = {
     "v": 1.41,
     "cum": -70.1
    }
+  ],
+  "hs300Codes": [
+   "510300"
+  ],
+  "hs300Names": [
+   "沪深300ETF(华泰柏瑞)"
   ]
  },
  "sentiment": {

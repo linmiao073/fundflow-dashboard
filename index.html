@@ -210,9 +210,9 @@
   </div>
 
   <div class="card" style="margin-bottom:16px">
-    <h2>沪深300ETF 与监控 ETF · 每日主力净流入<em>柱=当日净流入 ・ 线=累计（右轴） ・ 单位亿元</em></h2>
+    <h2>沪深300ETF 合计 · 每日主力净流入<em>柱=当日净流入 ・ 线=累计（右轴） ・ 单位亿元</em></h2>
     <div style="margin-bottom:6px">
-      <div style="font-size:12px;color:var(--dim);margin-bottom:4px">10 只监控 ETF 合计（单支明细见下方缩略图与热力图）</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:4px">当前监控 510300 华泰柏瑞 · 沪深300ETF 合计（其余监控 ETF 见下方缩略图与热力图）</div>
       <svg class="chart" id="chartTotal" viewBox="0 0 900 250" preserveAspectRatio="none"></svg>
     </div>
     <div class="legend"><span><i style="background:#f0483e"></i>净流入</span><span><i style="background:#22b573"></i>净流出</span><span><i style="background:#4a8cff"></i>累计</span></div>
@@ -486,7 +486,7 @@
       });
       el.innerHTML=s;
     }
-    drawBarLine($('chartTotal'), S.total||[]);
+    drawBarLine($('chartTotal'), S.hs300||S.total||[]);
 
     // small multiples
     const mxAll=Math.max(...S.rows.reduce((a,r)=>a.concat(r.flows.map(v=>Math.abs(v||0))),[0]),1);

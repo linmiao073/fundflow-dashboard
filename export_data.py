@@ -179,17 +179,20 @@ for i, d in enumerate(etf_dates):
     cum += s
     etf_total.append({"d": d, "v": round(s, 1), "cum": round(cum, 1)})
 
+# 沪深300ETF 合计（大图口径，只含沪深300家族；扩展时在此追加 510310 易方达 / 159919 嘉实 / 510330 华夏）
+HS300_CODES = [("510300", "沪深300ETF(华泰柏瑞)")]
+hs300_rows = []
 cum300 = 0.0
-etf_300 = []
-for r in etf_rows:
-    if r["code"] == "510300":
-        cs = 0.0
-        for i, d in enumerate(etf_dates):
-            v = r["flows"][i]
-            if v is not None:
-                cs += v
-            etf_300.append({"d": d, "v": v, "cum": round(cs, 1)})
-        break
+for d in etf_dates:
+    vals = []
+    for code, _nm in HS300_CODES:
+        rec = (etf_hist.get(code) or {}).get("days", {}).get(d) or {}
+        if rec.get("flow") is not None:
+            vals.append(rec["flow"] / 1e8)
+    v = round(sum(vals), 2) if vals else None
+    if v is not None:
+        cum300 += v
+    hs300_rows.append({"d": d, "v": v, "cum": round(cum300, 1)})
 
 sent_path = os.path.join(OUT_DIR, "sentiment.json")
 sentiment = None
@@ -213,7 +216,8 @@ payload = {
     "mainline": mainline,
     "faded": faded,
     "etf": etfs,
-    "etfSeries": {"dates": etf_dates, "rows": etf_rows, "total": etf_total, "hs300": etf_300},
+    "etfSeries": {"dates": etf_dates, "rows": etf_rows, "total": etf_total, "hs300": hs300_rows,
+                  "hs300Codes": [c for c, _ in HS300_CODES], "hs300Names": [n for _, n in HS300_CODES]},
     "sentiment": sentiment,
     "rotation": rot,
     "stocks": stocks,
