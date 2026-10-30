@@ -31,5 +31,16 @@
   "lianban": 10,
   "phase": "分歧",
   "score": 54
+ },
+ {
+  "date": "20261030",
+  "ztCount": 47,
+  "dtCount": 82,
+  "zbCount": 31,
+  "zbr": 39.7,
+  "maxLbc": 5,
+  "lianban": 9,
+  "phase": "退潮",
+  "score": 40
  }
 ]
