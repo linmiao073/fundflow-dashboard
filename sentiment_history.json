@@ -42,5 +42,16 @@
   "lianban": 9,
   "phase": "退潮",
   "score": 40
+ },
+ {
+  "date": "20261102",
+  "ztCount": 125,
+  "dtCount": 8,
+  "zbCount": 28,
+  "zbr": 18.3,
+  "maxLbc": 6,
+  "lianban": 11,
+  "phase": "加速",
+  "score": 82
  }
 ]

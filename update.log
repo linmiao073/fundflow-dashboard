@@ -95,3 +95,25 @@
 [2026-10-30 15:50:09] sent: {"zt":47,"dt":82,"zb":31,"zbr":39.7,"max":5,"lb":9,"phase":"閫€娼?,"score":40}
 [2026-10-30 15:50:09] export: date= 2026-10-30 market points= 30 mainline= 4 etf= 13
 [2026-10-30 15:50:09] export: bytes= 28501
+[2026-10-30 15:50:09] git: [main ca7ef03] data: 2026-10-30 fund flow update
+[2026-10-30 15:50:09] git:  5 files changed, 1116 insertions(+), 1109 deletions(-)
+[2026-10-30 15:50:12] push main: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-10-30 15:50:12] push main:    834d9cf..ca7ef03  main -> main
+[2026-10-30 15:50:14] push gh-pages: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-10-30 15:50:14] push gh-pages:    834d9cf..ca7ef03  main -> gh-pages
+[2026-10-30 15:50:14] === done ===
+[2026-11-02 15:50:00] === start ===
+[2026-11-02 15:50:03] flow: C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37
+[2026-11-02 15:50:03] flow:   if (!klineHost) throw new Error('kline host unavailable');
+[2026-11-02 15:50:03] flow:                         ^
+[2026-11-02 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-11-02 15:50:03] flow: Error: kline host unavailable
+[2026-11-02 15:50:03] flow:     at C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_node2.js:37:25
+[2026-11-02 15:50:03] flow: System.Management.Automation.RemoteException
+[2026-11-02 15:50:03] flow: Node.js v24.19.0
+[2026-11-02 15:50:03] flowCount=496
+[2026-11-02 15:50:03] sent: zt=125 dt=8 zb=28
+[2026-11-02 15:50:03] sent: saved C:\Users\game-netease\lobsterai\project\fundflow\sentiment.json
+[2026-11-02 15:50:03] sent: {"zt":125,"dt":8,"zb":28,"zbr":18.3,"max":6,"lb":11,"phase":"鍔犻€?,"score":82}
+[2026-11-02 15:50:04] export: date= 2026-11-02 market points= 30 mainline= 4 etf= 13
+[2026-11-02 15:50:04] export: bytes= 29081
