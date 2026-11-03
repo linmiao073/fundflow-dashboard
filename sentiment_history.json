@@ -53,5 +53,16 @@
   "lianban": 11,
   "phase": "加速",
   "score": 82
+ },
+ {
+  "date": "20261103",
+  "ztCount": 48,
+  "dtCount": 17,
+  "zbCount": 34,
+  "zbr": 41.5,
+  "maxLbc": 4,
+  "lianban": 15,
+  "phase": "分歧",
+  "score": 53
  }
 ]
