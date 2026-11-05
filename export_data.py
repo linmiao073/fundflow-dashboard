@@ -200,6 +200,13 @@ if os.path.exists(sent_path):
     with open(sent_path, encoding="utf-8") as f:
         sentiment = json.load(f)
 
+# ETF 净申购（申赎口径，由 scripts/build_etf_subflow.py 生成）
+sub_path = os.path.join(OUT_DIR, "data", "sub_flow.json")
+sub = None
+if os.path.exists(sub_path):
+    with open(sub_path, encoding="utf-8") as f:
+        sub = json.load(f)
+
 payload = {
     "generatedAt": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime("%Y-%m-%d %H:%M"),
     "date": today,
@@ -219,6 +226,7 @@ payload = {
     "etfSeries": {"dates": etf_dates, "rows": etf_rows, "total": etf_total, "hs300": hs300_rows,
                   "hs300Codes": [c for c, _ in HS300_CODES], "hs300Names": [n for _, n in HS300_CODES]},
     "sentiment": sentiment,
+    "sub": sub,
     "rotation": rot,
     "stocks": stocks,
     "regime": (watch.get("regime") or {}),

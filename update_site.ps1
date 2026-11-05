@@ -27,6 +27,13 @@ if ([int]$flowCount -lt 400) { Log "ERROR incomplete collection ($flowCount/496)
 
 & node "$WS\scripts\collect_sentiment.js" 2>&1 | ForEach-Object { Log "sent: $_" }
 
+# ETF 份额快照 + 交易所申赎历史 + 净申购聚合（一级市场口径）
+& node "$WS\scripts\collect_etf_share.js" 2>&1 | ForEach-Object { Log "share: $_" }
+$d0 = (Get-Date).AddDays(-12).ToString("yyyy-MM-dd")
+$d1 = (Get-Date).ToString("yyyy-MM-dd")
+& python "$WS\scripts\collect_etf_share_hist.py" $d0 $d1 2>&1 | ForEach-Object { Log "shhist: $_" }
+& python "$WS\scripts\build_etf_subflow.py" 2>&1 | ForEach-Object { Log "subflow: $_" }
+
 Set-Location $SITE
 & python "export_data.py" 2>&1 | ForEach-Object { Log "export: $_" }
 

@@ -210,7 +210,17 @@
   </div>
 
   <div class="card" style="margin-bottom:16px">
-    <h2>沪深300ETF 合计 · 每日主力净流入<em>柱=当日净流入 ・ 线=累计（右轴） ・ 单位亿元</em></h2>
+    <h2>ETF 净申购（一级市场 · 申赎口径）<em>份额变化×收盘价 ・ 单位亿元 ・ 交易所日度份额</em></h2>
+    <div id="subTabs" style="display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 12px"></div>
+    <div id="subKpi" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px"></div>
+    <svg class="chart" id="subChart" viewBox="0 0 900 250" preserveAspectRatio="none"></svg>
+    <div class="legend"><span><i style="background:#f0483e"></i>净申购</span><span><i style="background:#22b573"></i>净赎回</span><span><i style="background:#4a8cff"></i>累计</span></div>
+    <div class="note" id="subNote" style="margin-top:8px"></div>
+    <table id="subTable" style="margin-top:10px"></table>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h2>沪深300ETF · 二级市场主力净流入（东财大单口径）<em>柱=当日 ・ 线=累计（右轴） ・ 单位亿元 ・ 与上方申赎口径不同</em></h2>
     <div style="margin-bottom:6px">
       <div style="font-size:12px;color:var(--dim);margin-bottom:4px">当前监控 510300 华泰柏瑞 · 沪深300ETF 合计（其余监控 ETF 见下方缩略图与热力图）</div>
       <svg class="chart" id="chartTotal" viewBox="0 0 900 250" preserveAspectRatio="none"></svg>
@@ -438,6 +448,77 @@
       if(i%4===0) s+=`<text x="${(x+w/2).toFixed(1)}" y="${H-8}" text-anchor="middle">${p.d.slice(5)}</text>`;
     });
     $('rchart').innerHTML=s;
+  })();
+
+  // ---- ETF 净申购（申赎口径）tabs
+  (function(){
+    const S = D.sub;
+    if(!S || !S.tabs || !S.tabs.length) return;
+    const order = ['all','broad','industry','gold'];
+    const tabs = order.map(k=>S.tabs.find(t=>t.key===k)).filter(Boolean);
+    if(!tabs.length) return;
+    const box = $('subTabs'), chartEl = $('subChart');
+    let active = tabs[0].key;
+    const fmtS = v => (v==null?'—':(v>0?'+':'')+v.toFixed(1));
+
+    function draw(t){
+      const rows = t.series.filter(r=>r.v!=null);
+      const W=900,H=250,padL=52,padR=56,padB=28,padT=14;
+      const n=rows.length||1;
+      const maxV=Math.max(...rows.map(r=>Math.abs(r.v||0)),1);
+      const cums=rows.map(r=>r.cum||0);
+      let cMin=Math.min(...cums,0), cMax=Math.max(...cums,0);
+      if(cMax-cMin<1){cMax+=1;cMin-=1;}
+      const zero=padT+(H-padT-padB)/2, sc=(H-padT-padB)/2/maxV, bw=(W-padL-padR)/n;
+      let s2='';
+      [-1,-0.5,0,0.5,1].forEach(k=>{
+        const y=zero-k*(H-padT-padB)/2;
+        s2+=`<line class="axis" x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}" opacity="${k===0?0.9:0.3}"/>`;
+        s2+=`<text x="${padL-7}" y="${y+3}" text-anchor="end">${(k*maxV).toFixed(0)}</text>`;
+      });
+      [cMin,(cMin+cMax)/2,cMax].forEach(k=>{
+        const y=H-padB-((k-cMin)/(cMax-cMin))*(H-padT-padB);
+        s2+=`<text x="${W-padR+7}" y="${y+3}" text-anchor="start" fill="#6f8ab5">${k.toFixed(0)}</text>`;
+      });
+      rows.forEach((r,i)=>{
+        const x=padL+i*bw+bw*0.18, w=bw*0.64, h=Math.abs(r.v)*sc, y=r.v>=0?zero-h:zero;
+        s2+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(h,0.6).toFixed(1)}" rx="1.5" fill="${r.v>=0?'#f0483e':'#22b573'}" opacity="0.85"><title>${r.d} 净申购 ${fmtS(r.v)} 亿 ・ 累计 ${fmtS(r.cum)} 亿</title></rect>`;
+        if(i%4===0) s2+=`<text x="${(x+w/2).toFixed(1)}" y="${H-8}" text-anchor="middle">${r.d.slice(5)}</text>`;
+      });
+      const pts=rows.map((r,i)=>`${(padL+i*bw+bw/2).toFixed(1)},${(H-padB-((r.cum-cMin)/(cMax-cMin))*(H-padT-padB)).toFixed(1)}`).join(' ');
+      s2+=`<polyline points="${pts}" fill="none" stroke="#4a8cff" stroke-width="1.6" opacity="0.9"/>`;
+      chartEl.innerHTML=s2;
+    }
+
+    function kpi(t){
+      const card=(k,v,cls)=>`<div style="background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:130px"><div style="font-size:12px;color:var(--dim)">${k}</div><div style="font-size:17px;font-weight:600;color:${cls}">${v}</div></div>`;
+      const col=v=>(v||0)>=0?'var(--up)':'var(--dn)';
+      const last=t.series.filter(r=>r.v!=null).slice(-1)[0];
+      $('subKpi').innerHTML =
+        card(`最近一日 ${last?last.d.slice(5):''}`, fmtS(t.today)+' 亿', col(t.today)) +
+        card('近 5 日', fmtS(t.d5)+' 亿', col(t.d5)) +
+        card('近 20 日', fmtS(t.d20)+' 亿', col(t.d20)) +
+        card('成分 ETF', t.n+' 只', 'var(--txt)');
+    }
+
+    function members(t){
+      $('subTable').innerHTML = '<thead><tr><th>代码</th><th>名称</th><th style="text-align:right">净申购(亿)</th><th style="text-align:right">份额(亿份)</th><th style="text-align:right">份额变化(亿份)</th></tr></thead><tbody>' +
+        t.members.map(m=>`<tr><td>${m.code}</td><td>${m.name}</td><td style="text-align:right;color:${m.v>=0?'var(--up)':'var(--dn)'}">${fmtS(m.v)}</td><td style="text-align:right">${m.share.toFixed(2)}</td><td style="text-align:right;color:${m.dshare>=0?'var(--up)':'var(--dn)'}">${m.dshare>0?'+':''}${m.dshare.toFixed(2)}</td></tr>`).join('') +
+        '</tbody>';
+    }
+
+    function render(){
+      box.innerHTML = tabs.map(t=>{
+        const on = t.key===active;
+        return `<button data-k="${t.key}" style="cursor:pointer;border:1px solid ${on?'var(--acc)':'var(--line)'};background:${on?'rgba(74,140,255,.16)':'var(--card2)'};color:${on?'var(--acc)':'var(--dim)'};border-radius:9px;padding:6px 14px;font-size:13px">${t.name}</button>`;
+      }).join('');
+      const t = tabs.find(x=>x.key===active) || tabs[0];
+      draw(t); kpi(t); members(t);
+      const last = t.series.filter(r=>r.v!=null).slice(-1)[0];
+      $('subNote').textContent = `口径：净申购 =（当日份额 − 前一日份额）× 收盘价，反映一级市场申购赎回；份额取交易所日度规模（${last?last.d:''}，T+1 确认）。与“二级市场主力净流入”不是同一指标，两者方向常相反。`;
+      [...box.querySelectorAll('button')].forEach(b=>b.onclick=()=>{active=b.dataset.k;render();});
+    }
+    render();
   })();
 
   // ---- ETF daily series charts
