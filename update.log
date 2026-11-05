@@ -168,3 +168,17 @@
 [2026-11-04 15:50:09] push gh-pages: To https://github.com/linmiao073/fundflow-dashboard.git
 [2026-11-04 15:50:09] push gh-pages:    b4c0c3e..44609dc  main -> gh-pages
 [2026-11-04 15:50:09] === done ===
+[2026-11-05 15:50:00] === start ===
+[2026-11-05 15:50:00] flow: klineHost=https://push2delay.eastmoney.com
+[2026-11-05 15:50:01] flow: clist=https://push2delay.eastmoney.com boards=496
+[2026-11-05 15:50:21] flow: etfs=13
+[2026-11-05 15:50:26] flow: flow ok=496 fail=0
+[2026-11-05 15:50:26] flow: history boards=496 dates=76 today=2026-11-05
+[2026-11-05 15:50:26] flow: etf_daily today=2026-11-05
+[2026-11-05 15:50:26] flow: DONE
+[2026-11-05 15:50:26] flowCount=496
+[2026-11-05 15:50:27] sent: zt=84 dt=0 zb=48
+[2026-11-05 15:50:27] sent: saved C:\Users\game-netease\lobsterai\project\fundflow\sentiment.json
+[2026-11-05 15:50:27] sent: {"zt":84,"dt":0,"zb":48,"zbr":36.4,"max":4,"lb":21,"phase":"鍔犻€?,"score":82}
+[2026-11-05 15:50:27] export: date= 2026-11-05 market points= 30 mainline= 4 etf= 13
+[2026-11-05 15:50:27] export: bytes= 28653

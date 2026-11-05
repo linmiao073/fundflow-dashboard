@@ -1,5 +1,5 @@
 window.DATA = {
- "generatedAt": "2026-11-05 15:36",
+ "generatedAt": "2026-11-05 15:50",
  "date": "2026-11-05",
  "market": [
   {
@@ -712,7 +712,7 @@ window.DATA = {
    "amount": 75.2,
    "flow": -1.94,
    "cum5": -18.79,
-   "vr": 0.62,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -722,7 +722,7 @@ window.DATA = {
    "amount": 19.9,
    "flow": 0.71,
    "cum5": -0.42,
-   "vr": 0.43,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -732,7 +732,7 @@ window.DATA = {
    "amount": 189.1,
    "flow": -6.28,
    "cum5": -28.64,
-   "vr": 1.16,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -742,17 +742,17 @@ window.DATA = {
    "amount": 46.6,
    "flow": -1.88,
    "cum5": -3.47,
-   "vr": 1.73,
+   "vr": null,
    "isIndex": false
   },
   {
    "code": "159915",
    "name": "创业板ETF易方达",
-   "pct": 0.9000000000000001,
+   "pct": 0.9,
    "amount": 163.9,
    "flow": -1.74,
    "cum5": -39.35,
-   "vr": 1.04,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -762,7 +762,7 @@ window.DATA = {
    "amount": 24.3,
    "flow": -2.73,
    "cum5": -5.78,
-   "vr": 1.17,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -772,17 +772,17 @@ window.DATA = {
    "amount": 40.3,
    "flow": -0.98,
    "cum5": -6.53,
-   "vr": 1.29,
+   "vr": null,
    "isIndex": false
   },
   {
    "code": "512480",
    "name": "半导体ETF国联安",
-   "pct": 3.5000000000000004,
+   "pct": 3.5,
    "amount": 19.6,
    "flow": -0.81,
    "cum5": 0.73,
-   "vr": 1.55,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -792,7 +792,7 @@ window.DATA = {
    "amount": 10.6,
    "flow": -0.24,
    "cum5": 0.73,
-   "vr": 1.56,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -802,7 +802,7 @@ window.DATA = {
    "amount": 54.4,
    "flow": 7.08,
    "cum5": 12.04,
-   "vr": 2.24,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -812,17 +812,17 @@ window.DATA = {
    "amount": 1172.6,
    "flow": 41.33,
    "cum5": 14.23,
-   "vr": 1.41,
+   "vr": null,
    "isIndex": true
   },
   {
    "code": "399006",
    "name": "创业板指",
-   "pct": 0.8699999999999999,
+   "pct": 0.87,
    "amount": 5785.6,
    "flow": 25.39,
    "cum5": 10.09,
-   "vr": 1.23,
+   "vr": null,
    "isIndex": true
   },
   {
@@ -832,7 +832,7 @@ window.DATA = {
    "amount": 9797.1,
    "flow": 39.22,
    "cum5": -264.79,
-   "vr": 1.2,
+   "vr": null,
    "isIndex": true
   }
  ],
@@ -1554,7 +1554,7 @@ window.DATA = {
  },
  "sentiment": {
   "date": "20261105",
-  "generatedAt": "2026-11-05T07:36:28.027Z",
+  "generatedAt": "2026-11-05T07:50:27.268Z",
   "ztCount": 84,
   "dtCount": 0,
   "zbCount": 48,
