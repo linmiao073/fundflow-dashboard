@@ -161,3 +161,10 @@
 [2026-11-04 15:50:03] sent: {"zt":118,"dt":10,"zb":33,"zbr":21.9,"max":3,"lb":12,"phase":"淇","score":72}
 [2026-11-04 15:50:03] export: date= 2026-11-04 market points= 30 mainline= 4 etf= 13
 [2026-11-04 15:50:03] export: bytes= 29302
+[2026-11-04 15:50:04] git: [main 44609dc] data: 2026-11-04 fund flow update
+[2026-11-04 15:50:04] git:  4 files changed, 20 insertions(+), 5 deletions(-)
+[2026-11-04 15:50:06] push main: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-11-04 15:50:06] push main:    b4c0c3e..44609dc  main -> main
+[2026-11-04 15:50:09] push gh-pages: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-11-04 15:50:09] push gh-pages:    b4c0c3e..44609dc  main -> gh-pages
+[2026-11-04 15:50:09] === done ===
