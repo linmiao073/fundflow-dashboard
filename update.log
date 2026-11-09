@@ -233,3 +233,40 @@
 [2026-11-06 15:50:58] push gh-pages: To https://github.com/linmiao073/fundflow-dashboard.git
 [2026-11-06 15:50:58] push gh-pages:    7f46ade..57d39a8  main -> gh-pages
 [2026-11-06 15:50:58] === done ===
+[2026-11-09 15:50:00] === start ===
+[2026-11-09 15:50:01] flow: klineHost=https://push2delay.eastmoney.com
+[2026-11-09 15:50:01] flow: clist=https://push2delay.eastmoney.com boards=496
+[2026-11-09 15:50:08] flow: etfs=13
+[2026-11-09 15:50:13] flow: flow ok=496 fail=0
+[2026-11-09 15:50:13] flow: history boards=496 dates=78 today=2026-11-09
+[2026-11-09 15:50:13] flow: etf_daily today=2026-11-09
+[2026-11-09 15:50:13] flow: DONE
+[2026-11-09 15:50:13] flowCount=496
+[2026-11-09 15:50:14] sent: zt=54 dt=1 zb=44
+[2026-11-09 15:50:14] sent: {"zt":54,"dt":1,"zb":44,"zbr":44.9,"max":6,"lb":9,"phase":"淇","score":64}
+[2026-11-09 15:50:14] sent: saved C:\Users\game-netease\lobsterai\project\fundflow\sentiment.json
+[2026-11-09 15:50:18] share: etf_share date=2026-11-09 host=https://push2.eastmoney.com etfs=1659 days=3
+[2026-11-09 15:50:18] share: 510300 share=466.40浜夸唤 close=4.13 aum=1926浜?
+[2026-11-09 15:50:18] shhist: Traceback (most recent call last):
+[2026-11-09 15:50:18] shhist:   File "C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_etf_share_hist.py", line 152, in <module>
+[2026-11-09 15:50:18] shhist:     main()
+[2026-11-09 15:50:18] shhist:   File "C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_etf_share_hist.py", line 95, in main
+[2026-11-09 15:50:18] shhist:     days = trading_days(START, END)
+[2026-11-09 15:50:18] shhist:            ^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-11-09 15:50:18] shhist:   File "C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_etf_share_hist.py", line 41, in trading_days
+[2026-11-09 15:50:18] shhist:     j = json.loads(get(u, {"User-Agent": "Mozilla/5.0"}, 20).decode("utf-8"))
+[2026-11-09 15:50:18] shhist:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-11-09 15:50:18] shhist:   File "C:\Users\game-netease\AppData\Roaming\LobsterAI\openclaw\state\workspace-stockexpert\scripts\collect_etf_share_hist.py", line 34, in get
+[2026-11-09 15:50:18] shhist:     return urllib.request.urlopen(req, timeout=timeout).read()
+[2026-11-09 15:50:18] shhist:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-11-09 15:50:18] shhist:   File "urllib\request.py", line 216, in urlopen
+[2026-11-09 15:50:18] shhist:   File "urllib\request.py", line 525, in open
+[2026-11-09 15:50:18] shhist:   File "urllib\request.py", line 634, in http_response
+[2026-11-09 15:50:18] shhist:   File "urllib\request.py", line 563, in error
+[2026-11-09 15:50:18] shhist:   File "urllib\request.py", line 496, in _call_chain
+[2026-11-09 15:50:18] shhist:   File "urllib\request.py", line 643, in http_error_default
+[2026-11-09 15:50:18] shhist: urllib.error.HTTPError: HTTP Error 501: Not Implemented
+[2026-11-09 15:50:39] subflow: price ok=0 miss=['512070', '159792', '510310', '588080', '512800', '159925', '513120', '560010', '510050', '159928', '512890', '518850', '512000', '513100', '159949', '159632', '563800', '159201', '159937', '513050', '159326', '588000', '512580', '510300', '159352', '159915', '512100', '563360', '512010', '159740', '512200', '588200', '513300', '515080', '513630', '159562', '512690', '563300', '512880', '512170', '159501', '515050', '159919', '518800', '159516', '159509', '159952', '513130', '512400', '159659', '512720', '513330', '512050', '520920', '159845', '515330', '513090', '159941', '518880', '159781', '510330', '159995', '588170', '515180', '517520', '159841', '159819', '159934', '159530', '512480', '510500', '512660', '513010', '515030', '159361', '512980', '515880', '515790', '510880', '159558', '562500', '159869', '159570', '563020', '159992', '513180', '515450', '510180', '518680', '510350', '159338', '513500', '510210']
+[2026-11-09 15:50:39] subflow: -> C:\Users\game-netease\lobsterai\project\fundflow\data\sub_flow.json
+[2026-11-09 15:50:39] export: date= 2026-11-09 market points= 30 mainline= 4 etf= 13
+[2026-11-09 15:50:39] export: bytes= 29145

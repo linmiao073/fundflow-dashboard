@@ -1,5 +1,5 @@
 window.DATA = {
- "generatedAt": "2026-11-09 15:36",
+ "generatedAt": "2026-11-09 15:50",
  "date": "2026-11-09",
  "market": [
   {
@@ -712,7 +712,7 @@ window.DATA = {
    "amount": 44.1,
    "flow": 1.77,
    "cum5": -13.25,
-   "vr": 0.39,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -722,7 +722,7 @@ window.DATA = {
    "amount": 15.6,
    "flow": -0.25,
    "cum5": -4.04,
-   "vr": 0.35,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -732,7 +732,7 @@ window.DATA = {
    "amount": 71.3,
    "flow": -1.24,
    "cum5": -21.26,
-   "vr": 0.4,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -742,7 +742,7 @@ window.DATA = {
    "amount": 17.5,
    "flow": -0.37,
    "cum5": -5.4,
-   "vr": 0.52,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -752,7 +752,7 @@ window.DATA = {
    "amount": 79.2,
    "flow": -5.51,
    "cum5": -38.47,
-   "vr": 0.48,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -762,7 +762,7 @@ window.DATA = {
    "amount": 11.5,
    "flow": -0.04,
    "cum5": -2.37,
-   "vr": 0.54,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -772,7 +772,7 @@ window.DATA = {
    "amount": 17.5,
    "flow": -0.63,
    "cum5": -6.75,
-   "vr": 0.54,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -782,7 +782,7 @@ window.DATA = {
    "amount": 7.7,
    "flow": -0.69,
    "cum5": -0.6,
-   "vr": 0.55,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -792,7 +792,7 @@ window.DATA = {
    "amount": 3.4,
    "flow": -0.1,
    "cum5": 0.89,
-   "vr": 0.44,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -802,7 +802,7 @@ window.DATA = {
    "amount": 23.3,
    "flow": -3.57,
    "cum5": 1.42,
-   "vr": 0.69,
+   "vr": null,
    "isIndex": false
   },
   {
@@ -812,7 +812,7 @@ window.DATA = {
    "amount": 717.3,
    "flow": 19.44,
    "cum5": 69.41,
-   "vr": 0.75,
+   "vr": null,
    "isIndex": true
   },
   {
@@ -822,7 +822,7 @@ window.DATA = {
    "amount": 4049.4,
    "flow": 1.59,
    "cum5": -94.94,
-   "vr": 0.81,
+   "vr": null,
    "isIndex": true
   },
   {
@@ -832,7 +832,7 @@ window.DATA = {
    "amount": 6825.3,
    "flow": 98.91,
    "cum5": -189.3,
-   "vr": 0.78,
+   "vr": null,
    "isIndex": true
   }
  ],
@@ -1554,7 +1554,7 @@ window.DATA = {
  },
  "sentiment": {
   "date": "20261109",
-  "generatedAt": "2026-11-09T07:36:20.872Z",
+  "generatedAt": "2026-11-09T07:50:14.653Z",
   "ztCount": 54,
   "dtCount": 1,
   "zbCount": 44,
