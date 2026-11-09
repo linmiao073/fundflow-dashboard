@@ -226,3 +226,10 @@
 [2026-11-06 15:50:52] subflow: -> C:\Users\game-netease\lobsterai\project\fundflow\data\sub_flow.json
 [2026-11-06 15:50:53] export: date= 2026-11-06 market points= 30 mainline= 4 etf= 13
 [2026-11-06 15:50:53] export: bytes= 30386
+[2026-11-06 15:50:53] git: [main 57d39a8] data: 2026-11-06 fund flow update
+[2026-11-06 15:50:53] git:  5 files changed, 77 insertions(+), 2908 deletions(-)
+[2026-11-06 15:50:56] push main: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-11-06 15:50:56] push main:    7f46ade..57d39a8  main -> main
+[2026-11-06 15:50:58] push gh-pages: To https://github.com/linmiao073/fundflow-dashboard.git
+[2026-11-06 15:50:58] push gh-pages:    7f46ade..57d39a8  main -> gh-pages
+[2026-11-06 15:50:58] === done ===
