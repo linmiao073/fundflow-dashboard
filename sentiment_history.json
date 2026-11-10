@@ -108,5 +108,16 @@
   "lianban": 9,
   "phase": "修复",
   "score": 64
+ },
+ {
+  "date": "20261110",
+  "ztCount": 93,
+  "dtCount": 0,
+  "zbCount": 19,
+  "zbr": 17,
+  "maxLbc": 7,
+  "lianban": 20,
+  "phase": "加速",
+  "score": 96
  }
 ]
