@@ -163,5 +163,16 @@
   "lianban": 11,
   "phase": "退潮",
   "score": 32
+ },
+ {
+  "date": "20261117",
+  "ztCount": 37,
+  "dtCount": 67,
+  "zbCount": 20,
+  "zbr": 35.1,
+  "maxLbc": 3,
+  "lianban": 6,
+  "phase": "冰点",
+  "score": 28
  }
 ]
