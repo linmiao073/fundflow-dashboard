@@ -196,5 +196,16 @@
   "lianban": 5,
   "phase": "冰点",
   "score": 16
+ },
+ {
+  "date": "20261120",
+  "ztCount": 28,
+  "dtCount": 58,
+  "zbCount": 7,
+  "zbr": 20,
+  "maxLbc": 4,
+  "lianban": 3,
+  "phase": "冰点",
+  "score": 28
  }
 ]
