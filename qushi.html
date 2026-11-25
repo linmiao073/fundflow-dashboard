@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>趋势波段 · A股资金流复盘</title>
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+<script src="data.js"></script>
+<script src="assets/base.js"></script>
+<script>
+(function(){
+  const {D,$,fmt,fmt0,cls,esc,mount} = window.APP;
+  mount({page:'qushi.html', title:'趋势波段 · 主线与板块资金'});
+  const t=D.today||{}, body=$('body');
+
+  body.innerHTML = `
+    <div class="card mb">
+      <h2>主线监控<em>题材口径（同花顺涨停板块）× 行业资金面印证</em></h2>
+      <div class="ml-grid" id="mlGrid"></div>
+      <div class="note">主线必须同时满足：①题材内涨停/连板成梯队；②所属行业板块资金不持续净流出。仅题材热、资金不跟 → 标注“待资金确认”。</div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card"><h2>今日净流入 TOP12<em>细分板块</em></h2><div class="rows" id="topRows"></div></div>
+      <div class="card"><h2>今日净流出 TOP12</h2><div class="rows" id="botRows"></div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card"><h2>12日累计净流入 TOP12</h2><div class="rows" id="cumUp"></div></div>
+      <div class="card"><h2>12日累计净流出 TOP12</h2><div class="rows" id="cumDn"></div></div>
+    </div>
+
+    <div class="grid g21">
+      <div class="card">
+        <h2>行业资金面候选（旧口径）<em>仅按板块组资金加速排序，不代表真实题材</em></h2>
+        <div class="tw"><table id="fcTable"></table></div>
+      </div>
+      <div class="card">
+        <h2>已退潮板块<em>5日 / 3日 / 今日</em></h2>
+        <div class="faded" id="fadedBox"></div>
+      </div>
+    </div>`;
+
+  // 主线卡
+  $('mlGrid').innerHTML = (D.mainline||[]).map(m=>{
+    const pts=m.series||[], vals=pts.map(p=>p.v);
+    const mn=Math.min(...vals,0), mx=Math.max(...vals,0), rng=(mx-mn)||1, W=260,H=36;
+    const xy=pts.map((p,i)=>`${(i/(pts.length-1||1)*W).toFixed(1)},${(H-3-((p.v-mn)/rng)*(H-6)).toFixed(1)}`).join(' ');
+    const last=vals.length?vals[vals.length-1]:0, col=last>=0?'#f0483e':'#22b573';
+    const reps=(m.reps||[]).map(r=>esc(r.name||'')).filter(Boolean).slice(0,4).join('、');
+    const confirm = m.d5>0 ? '资金已确认' : '待资金确认';
+    return `<div class="ml">
+      <div class="top">
+        <div><div class="rank">主线 ${m.rank} · 涨停 ${m.zt} 家 / 连板 ${m.lb} 只</div>
+          <div class="name">${esc(m.theme)}<span class="tag ${m.d5>0?'':'blue'}">${confirm}</span></div></div>
+        <span class="tag">${esc(m.high||'')}</span>
+      </div>
+      <svg class="spark" viewBox="0 0 260 36" preserveAspectRatio="none">
+        <line x1="0" x2="260" y1="${(H-3-((0-mn)/rng)*(H-6)).toFixed(1)}" y2="${(H-3-((0-mn)/rng)*(H-6)).toFixed(1)}" stroke="#2a3446" stroke-width="1"/>
+        <polyline points="${xy}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <div class="nums">
+        <div>5日<b class="${cls(m.d5)}">${fmt(m.d5)}</b></div>
+        <div>3日<b class="${cls(m.d3)}">${fmt(m.d3)}</b></div>
+        <div>今日<b class="${cls(m.today)}">${fmt(m.today)}</b></div>
+      </div>
+      <div class="fx"><span>行业：</span>${esc((m.boards||[]).slice(0,4).join(' / '))}</div>
+      <div class="fx"><span>代表股：</span>${reps||'—'}</div>
+      <div class="fx"><span>升级：</span>${esc(m.upgrade||'')}</div>
+      <div class="fx"><span>失效：</span>${esc(m.invalidate||'')}</div>
+    </div>`;
+  }).join('') || '<div class="note">暂无主线数据</div>';
+
+  APP.rows($('topRows'), t.top||[], true);
+  APP.rows($('botRows'), t.bottom||[], true);
+  APP.rows($('cumUp'), (D.cum||{}).up||[], false);
+  APP.rows($('cumDn'), (D.cum||{}).down||[], false);
+
+  // 旧口径候选表
+  let h='<thead><tr><th>技能</th><th>代表板块</th><th>5日</th><th>今日</th><th>连流入</th></tr></thead><tbody>';
+  (D.flowCandidates||[]).forEach(c=>{
+    h+=`<tr><td>${esc((c.line||'').split(' / ')[0])}</td><td style="text-align:left;color:#9fb0c9">${esc(c.rep||'')}</td>
+      <td class="${cls(c.d5)}">${fmt(c.d5)}</td><td class="${cls(c.today)}">${fmt(c.today)}</td><td>${c.streak}天</td></tr>`;
+  });
+  $('fcTable').innerHTML=h+'</tbody>';
+
+  $('fadedBox').innerHTML = (D.faded||[]).map(f=>`<div><b>${esc(f.line)}</b><span>${esc(f.desc)}</span></div>`).join('') || '<div class="note">无</div>';
+})();
+</script>
+</body>
+</html>

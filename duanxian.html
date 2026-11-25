@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>短线情绪 · A股资金流复盘</title>
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+<script src="data.js"></script>
+<script src="assets/base.js"></script>
+<script>
+(function(){
+  const {D,$,fmt,fmt0,cls,esc,mount} = window.APP;
+  mount({page:'duanxian.html', title:'短线情绪 · 涨停题材'});
+  const s = D.sentiment || {};
+  const body = $('body');
+
+  body.innerHTML = `
+    <div class="grid g21">
+      <div class="card">
+        <h2>今日市场情绪<em id="sentTag"></em></h2>
+        <div class="sent">
+          <div class="score"><b id="sentScore">–</b><span>情绪分</span></div>
+          <div style="flex:1"><div class="phase" id="sentPhase">–</div><div class="reason" id="sentReason"></div></div>
+        </div>
+        <div class="pills" id="sentPills"></div>
+        <div class="sub">连板高度分布</div>
+        <div class="ladder" id="sentLadder"></div>
+      </div>
+      <div class="card">
+        <h2>题材主线榜<em>同花顺涨停板块 ・ 涨停家数 / 连板数</em></h2>
+        <div class="th-list" id="themeList"></div>
+        <div class="sub">子题材（归入上方主线）</div>
+        <div class="chips" id="subThemes"></div>
+        <div class="note">按“连板数×2＋涨停家数”排序；子题材与主线涨停股重合≥70% 时合并显示，避免重复计数。</div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>玄学 / 情绪性炒作<em>名称、生肖、谐音等，按公告原文标注</em></h2>
+        <div id="xuBox"></div>
+        <div class="note">来源：同花顺个股涨停原因原文（含"羊字辈"等表述）。此类涨停与基本面无关，参与仅为博弈情绪，风险高于题材股。</div>
+      </div>
+      <div class="card">
+        <h2>涨停板块 TOP10<em>东财行业口径</em></h2>
+        <div class="rows" id="ztBoards"></div>
+        <div class="sub">连板板块（≥2板）</div>
+        <div class="chips" id="lbBoards"></div>
+      </div>
+    </div>
+
+    <div class="card mb">
+      <h2>高位板梯队（≥3板）<em>题材归属为同花顺概念标签</em></h2>
+      <div class="tw"><table id="highTable"></table></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>跌停 / 退潮板块<em>跌停家数与个股</em></h2>
+        <div id="dtBox"></div>
+      </div>
+      <div class="card">
+        <h2>亏钱效应速览</h2>
+        <div class="pills" id="dtPills"></div>
+        <div class="note" id="dtNote"></div>
+      </div>
+    </div>`;
+
+  // 情绪
+  $('sentTag').textContent = String(s.date||'').replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3');
+  $('sentScore').textContent = s.score==null?'–':s.score;
+  const ph=$('sentPhase'); ph.textContent=s.phase||'–'; ph.className='phase ph-'+(s.phase||'分歧');
+  $('sentReason').textContent = s.phaseReason||'';
+  $('sentPills').innerHTML = (s.signals||[]).map(x=>{
+    const isPct = x.k==='炸板率';
+    const v = x.v==null?'–':(isPct?Math.round(x.v)+'%':Math.round(x.v));
+    return `<div class="pill s-${x.s}">${esc(x.k)}<b>${v}</b><em>${esc(x.note||'')}</em></div>`;
+  }).join('');
+
+  const hist=s.lbcHist||{}, keys=Object.keys(hist).map(Number).sort((a,b)=>b-a);
+  const mxh=Math.max(...keys.map(k=>hist[k]),1);
+  $('sentLadder').innerHTML = keys.map(k=>`<div class="lr"><span>${k}板</span>
+    <span class="lb"><i style="width:${(hist[k]/mxh*100).toFixed(0)}%"></i></span>
+    <span style="text-align:right">${hist[k]}家</span></div>`).join('') || '<div class="note">无数据</div>';
+
+  // 题材榜
+  const themes = D.themes||[];
+  $('themeList').innerHTML = themes.map((x,i)=>{
+    const reps=(x.reps||[]).slice(0,3).map(r=>esc(r.name||'')).filter(Boolean).join('、');
+    return `<div class="th ${i===0?'top':''}">
+      <div class="rk">${x.rank||i+1}</div>
+      <div><div class="nm">${esc(x.name)}${x.xuanxue?'<span class="tag red">含玄学</span>':''}</div>
+        <div class="mt">${reps?('代表：'+reps):''}${x.high?('　高度 '+esc(x.high)):''}</div></div>
+      <div class="st">涨停<b>${x.zt}</b><s>连板 ${x.lb}</s></div></div>`;
+  }).join('') || '<div class="note">暂无题材数据</div>';
+
+  const subs=D.subThemes||[];
+  $('subThemes').innerHTML = subs.length ? subs.map(x=>`<span class="chip">${esc(x.theme)}<b>${x.zt}/${x.lb}</b></span>`).join('')
+    : '<span class="chip">无</span>';
+
+  // 玄学
+  const xu=D.xuanxue||[];
+  $('xuBox').innerHTML = xu.length ? xu.map(x=>`<div class="xu">
+      <b>${esc(x.name)}</b>${(x.themes||[]).length?`<span class="tag blue">${esc((x.themes||[]).slice(0,3).join(' / '))}</span>`:''}
+      <span>${esc(x.text||'')}</span></div>`).join('')
+    : '<div class="note">今日无玄学类炒作标的。</div>';
+
+  // 涨停板块
+  const bt=s.boardTop||[], bmax=Math.max(...bt.map(x=>x.n),1);
+  $('ztBoards').innerHTML = bt.map(x=>`<div class="row"><div class="nm">${esc(x.name)}</div>
+    <div class="bar"><i class="up" style="width:${(x.n/bmax*100).toFixed(0)}%"></i></div>
+    <div class="val up">${x.n}家</div></div>`).join('');
+  $('lbBoards').innerHTML = (s.lbBoardTop||[]).length
+    ? s.lbBoardTop.map(x=>`<span class="chip">${esc(x.name)}<b>${x.n}</b></span>`).join('')
+    : '<span class="chip">无连板</span>';
+
+  // 高位板（含题材）
+  const sc=D.stockConcepts||{};
+  const hi=(s.high||[]).slice(0,12);
+  let h='<thead><tr><th>个股</th><th>连板</th><th>封单</th><th>行业</th><th>题材</th></tr></thead><tbody>';
+  hi.forEach(x=>{
+    const th=(sc[x.code]||{}).themes||[];
+    h+=`<tr><td>${esc(x.name)}<span style="color:#5d6879;font-size:11px"> ${x.code}</span></td>
+      <td class="up" style="font-weight:600">${x.lbc}</td>
+      <td>${x.fund?(x.fund/1e8).toFixed(2)+'亿':'-'}</td>
+      <td style="color:#8a95a8;font-size:11px">${esc(x.board||'')}</td>
+      <td style="color:#9fb0c9;font-size:11px">${esc(th.slice(0,2).join(' / '))}</td></tr>`;
+  });
+  $('highTable').innerHTML = hi.length ? h+'</tbody>' : '<tbody><tr><td style="color:#5d6879">无 3 板及以上个股</td></tr></tbody>';
+
+  // 跌停板块
+  const dtb=D.dtBoards||[];
+  $('dtBox').innerHTML = dtb.length ? dtb.map(b=>`<div class="xu" style="background:rgba(34,181,115,.06);border-color:rgba(34,181,115,.22)">
+      <b style="color:#7fdcb0">${esc(b.name)}</b><span style="color:#8a95a8">跌停 ${b.n} 家 ・ ${esc((b.stocks||[]).map(s2=>s2.name).join('、'))}</span></div>`).join('')
+    : '<div class="note">今日无跌停，无退潮板块。</div>';
+
+  const dtc=s.dtCount||0, zbc=s.zbCount||0, ztc=s.ztCount||0;
+  $('dtPills').innerHTML = [
+    ['涨停',ztc,''],['跌停',dtc,dtc>10?'s-弱':''],['炸板',zbc,zbc>40?'s-弱':''],
+    ['炸板率',(s.zbr==null?'–':Math.round(s.zbr)+'%'),(s.zbr>45?'s-弱':'')],
+    ['最高连板',s.maxLbc,''],['连板家数',s.lianban,'']
+  ].map(([k,v,c])=>`<div class="pill ${c}">${k}<b>${v}</b></div>`).join('');
+  $('dtNote').textContent = dtc>15 ? '跌停家数偏多，退潮特征明显：高位股断板即杀，建议降仓至低位 2 进 3 以内。'
+    : (zbc/Math.max(1,ztc+zbc)>0.45 ? '炸板率偏高，封板质量差，追高易被埋，宜等竞价确认。'
+    : '亏钱效应可控，按题材节点与竞价确认执行。');
+})();
+</script>
+</body>
+</html>

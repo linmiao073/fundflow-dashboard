@@ -27,6 +27,9 @@ if ([int]$flowCount -lt 400) { Log "ERROR incomplete collection ($flowCount/496)
 
 & node "$WS\scripts\collect_sentiment.js" 2>&1 | ForEach-Object { Log "sent: $_" }
 
+# 同花顺题材（真实主线概念 / 玄学 / 跌停板块）+ 东财行业板块映射
+& python "$WS\scripts\collect_ths.py" 2>&1 | ForEach-Object { Log "ths: $_" }
+
 # ETF 份额快照 + 交易所申赎历史 + 净申购聚合（一级市场口径）
 & node "$WS\scripts\collect_etf_share.js" 2>&1 | ForEach-Object { Log "share: $_" }
 $d0 = (Get-Date).AddDays(-12).ToString("yyyy-MM-dd")

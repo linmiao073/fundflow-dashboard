@@ -23,6 +23,31 @@ etf_daily = load("etf_daily.json") or {}
 etf_hist = load("etf_history.json") or {}
 watch = load("mainline_watch.json") or {}
 
+sent_path = os.path.join(OUT_DIR, "sentiment.json")
+sentiment = None
+if os.path.exists(sent_path):
+    with open(sent_path, encoding="utf-8") as f:
+        sentiment = json.load(f)
+
+# 同花顺题材（真实主线概念 + 玄学 + 跌停板块），由 scripts/collect_ths.py 生成
+ths = load("ths_sentiment.json") or {}
+themes = ths.get("themes") or []
+board_theme = ths.get("boardTheme") or {}
+dt_boards = ths.get("dtBoards") or []
+
+# 情绪展示口径：炸板率取整、最高连板取整
+if sentiment:
+    if sentiment.get("zbr") is not None:
+        sentiment["zbr"] = int(round(sentiment["zbr"]))
+    if sentiment.get("maxLbc") is not None:
+        sentiment["maxLbc"] = int(sentiment["maxLbc"])
+    for sg in (sentiment.get("signals") or []):
+        if sg.get("k") == "炸板率" and sg.get("v") is not None:
+            v = sg["v"] * (100 if sg["v"] <= 1 else 1)
+            sg["v"] = int(round(v))
+    sentiment["dtBoards"] = dt_boards
+
+
 dates = sorted({d for s in flow.values() for d in s})
 today = dates[-1]
 last30 = dates[-30:]
@@ -70,8 +95,8 @@ cum_dn = sorted(cum, key=lambda x: x[1])[:12]
 def pack_cum(items):
     return [{"name": n, "v": round(s / 1e8, 1), "days": p} for n, s, p in items]
 
-# 主线监控
-mainline = []
+# 资金面候选（旧口径，行业板块组；保留作趋势页次要参考）
+flow_candidates = []
 for c in (watch.get("candidates") or []):
     boards = [b for b in c["boards"] if b in flow]
     if not boards:
@@ -92,7 +117,7 @@ for c in (watch.get("candidates") or []):
             streak += 1
         else:
             break
-    mainline.append({
+    flow_candidates.append({
         "rank": c.get("rank"),
         "line": c.get("line"),
         "rep": rep,
@@ -108,7 +133,114 @@ for c in (watch.get("candidates") or []):
         "note": c.get("note"),
         "series": series,
     })
-mainline.sort(key=lambda x: x["rank"] or 99)
+flow_candidates.sort(key=lambda x: x["rank"] or 99)
+
+
+def board_to_flow(name):
+    """东财涨停池的 hybk 是截断名（汽车零部），映射到完整板块名"""
+    if name in flow:
+        return name
+    for k in flow:
+        if k.startswith(name) or name.startswith(k):
+            return k
+    return None
+
+
+# 题材关键词 -> 行业板块（资金面口径补充，避免只用涨停股所在行业）
+THEME_BOARDS = {
+    "机器人": ["机器人", "自动化设备", "工控设备", "其他自动化设备", "电机", "汽车零部件"],
+    "芯片": ["半导体", "数字芯片设计", "模拟芯片设计", "集成电路设计", "半导体设备", "分立器件"],
+    "人工智能": ["软件开发", "IT服务", "计算机设备", "通信设备"],
+    "华为": ["消费电子", "光学光电子", "通信设备"],
+    "汽车": ["汽车零部件", "底盘与发动机系统", "其他汽车零部件", "汽车电子电气系统"],
+    "消费": ["白酒", "食品饮料", "商业百货", "家电行业"],
+}
+
+
+# 主线（真实题材口径）：同花顺涨停板块 × 东财行业资金
+high_lb = {h.get("code"): h for h in ((sentiment or {}).get("high") or [])}
+xu_codes = {x.get("code") for x in (ths.get("xuanxue") or [])}
+auto_notes = {}
+for c in (watch.get("candidates") or []):
+    key = (c.get("line") or "").split(" / ")[0]
+    auto_notes[key] = c
+
+mainline = []
+accepted = []
+sub_themes = []
+for t in themes[:8]:
+    if (t.get("zt") or 0) < 5 and (t.get("lb") or 0) < 4:
+        continue
+    tset = set(t.get("codes") or [])
+    parent = None
+    for a in accepted:
+        if tset and len(tset & a["codes"]) / len(tset) >= 0.7:
+            parent = a["theme"]
+            break
+    if parent:
+        sub_themes.append({"theme": t["name"], "parent": parent, "zt": t.get("zt"), "lb": t.get("lb"), "high": t.get("high")})
+        continue
+    names = [b for b, v in board_theme.items() if v.get("theme") == t["name"]]
+    for kw, bs in THEME_BOARDS.items():
+        if kw in t["name"]:
+            names = bs + names
+            break
+    seen = set()
+    fboards = []
+    for nm in names:
+        fb = board_to_flow(nm)
+        if fb and fb not in seen:
+            seen.add(fb)
+            fboards.append(fb)
+    fboards = fboards[:5]
+    boards = []
+    for fb in fboards:
+        hit = [k for k in board_theme if board_to_flow(k) == fb]
+        boards.append(hit[0] if hit else fb)
+    series = []
+    if fboards:
+        for d in dates[-10:]:
+            v = sum(flow[b].get(d, 0) for b in fboards)
+            series.append({"d": d, "v": round(v / 1e8, 1)})
+    d5 = sum((p["v"] for p in series[-5:]), 0)
+    d3 = sum((p["v"] for p in series[-3:]), 0)
+    dv = series[-1]["v"] if series else 0
+    reps = []
+    for r in (t.get("reps") or [])[:4]:
+        h = high_lb.get(r.get("code")) or {}
+        reps.append({"code": r.get("code"), "name": r.get("name"), "lb": h.get("lbc"),
+                     "board": h.get("board"), "reason": r.get("reason")})
+    mt = None
+    for k, c in auto_notes.items():
+        if k and (k in t["name"] or t["name"][:2] in k):
+            mt = c
+            break
+    cover = round(sum((board_theme[b].get("cover") or 0) for b in boards if b in board_theme) /
+                  max(1, sum((board_theme[b].get("n") or 0) for b in boards if b in board_theme)), 2) if boards else 0
+    xu_cnt = sum(1 for c in (t.get("codes") or []) if c in xu_codes)
+    mainline.append({
+        "rank": len(mainline) + 1,
+        "theme": t["name"],
+        "zt": t.get("zt"),
+        "lb": t.get("lb"),
+        "high": t.get("high"),
+        "boards": boards,
+        "cover": cover,
+        "d5": round(d5, 1),
+        "d3": round(d3, 1),
+        "today": round(dv, 1),
+        "reps": reps,
+        "xuanxue": (xu_cnt / max(1, len(t.get("codes") or []))) >= 0.25,
+        "evidence": (mt or {}).get("evidence") or (
+            "涨停 %d 家 / 连板 %d 只 / 高度 %s；行业板块 %s 涨停股中 %d%% 属该题材" % (
+                t.get("zt") or 0, t.get("lb") or 0, t.get("high") or "-",
+                "/".join(boards[:3]) or "-", int(cover * 100))),
+        "upgrade": (mt or {}).get("upgrade_trigger") or "题材内出现更高连板 + 板块单日≥20亿净流入",
+        "invalidate": (mt or {}).get("invalidate") or "高位断板无接力，涨停家数连续 2 日缩水 30% 以上",
+        "note": (mt or {}).get("note"),
+        "series": series,
+    })
+    accepted.append({"theme": t["name"], "codes": tset})
 
 # 已退潮
 faded = []
@@ -194,12 +326,6 @@ for d in etf_dates:
         cum300 += v
     hs300_rows.append({"d": d, "v": v, "cum": round(cum300, 1)})
 
-sent_path = os.path.join(OUT_DIR, "sentiment.json")
-sentiment = None
-if os.path.exists(sent_path):
-    with open(sent_path, encoding="utf-8") as f:
-        sentiment = json.load(f)
-
 # ETF 净申购（申赎口径，由 scripts/build_etf_subflow.py 生成）
 sub_path = os.path.join(OUT_DIR, "data", "sub_flow.json")
 sub = None
@@ -221,6 +347,18 @@ payload = {
     },
     "cum": {"days": 12, "up": pack_cum(cum_up), "down": pack_cum(cum_dn)},
     "mainline": mainline,
+    "subThemes": sub_themes,
+    "flowCandidates": flow_candidates,
+    "themes": [{"rank": t.get("rank"), "name": t["name"], "zt": t.get("zt"), "lb": t.get("lb"),
+                "high": t.get("high"),
+                "xuanxue": (sum(1 for c in (t.get("codes") or []) if c in xu_codes) / max(1, len(t.get("codes") or []))) >= 0.25,
+                "reps": (t.get("reps") or [])[:4]} for t in themes[:8]],
+    "xuanxue": [{"code": x.get("code"), "name": x.get("name"), "themes": x.get("themes"),
+                 "text": x.get("text")} for x in (ths.get("xuanxue") or [])],
+    "dtBoards": dt_boards,
+    "stockConcepts": {k: v for k, v in (ths.get("stockConcepts") or {}).items()
+                      if k in ({h.get("code") for h in ((sentiment or {}).get("high") or [])} |
+                               {h.get("code") for h in ((sentiment or {}).get("high") or [])})},
     "faded": faded,
     "etf": etfs,
     "etfSeries": {"dates": etf_dates, "rows": etf_rows, "total": etf_total, "hs300": hs300_rows,
