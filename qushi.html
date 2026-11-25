@@ -34,13 +34,18 @@
 
     <div class="grid g21">
       <div class="card">
-        <h2>行业资金面候选（旧口径）<em>仅按板块组资金加速排序，不代表真实题材</em></h2>
-        <div class="tw"><table id="fcTable"></table></div>
+        <h2>轮动节奏<em>相邻交易日 TOP10 重合度（Jaccard）</em></h2>
+        <svg class="chart" id="rchart" viewBox="0 0 900 200" preserveAspectRatio="none"></svg>
       </div>
       <div class="card">
         <h2>已退潮板块<em>5日 / 3日 / 今日</em></h2>
         <div class="faded" id="fadedBox"></div>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>行业资金面候选（旧口径）<em>仅按板块组资金加速排序，不代表真实题材</em></h2>
+      <div class="tw"><table id="fcTable"></table></div>
     </div>`;
 
   // 主线卡
@@ -86,6 +91,23 @@
   $('fcTable').innerHTML=h+'</tbody>';
 
   $('fadedBox').innerHTML = (D.faded||[]).map(f=>`<div><b>${esc(f.line)}</b><span>${esc(f.desc)}</span></div>`).join('') || '<div class="note">无</div>';
+
+  (function(){
+    const d=D.rotation||[]; if(!d.length) return;
+    const W=900,H=200,padL=40,padB=26,padT=12,max=.35,n=d.length,bw=(W-padL-10)/n;
+    let s='';
+    [0,.1,.2,.3].forEach(k=>{
+      const y=H-padB-(k/max)*(H-padT-padB);
+      s+=`<line class="axis" x1="${padL}" x2="${W-4}" y1="${y}" y2="${y}" opacity="${k===0?.9:.3}"/>`;
+      s+=`<text x="${padL-6}" y="${y+3}" text-anchor="end">${k.toFixed(1)}</text>`;
+    });
+    d.forEach((p,i)=>{
+      const h=Math.min(p.j,max)/max*(H-padT-padB), x=padL+i*bw+bw*.2, w=bw*.6;
+      s+=`<rect x="${x.toFixed(1)}" y="${(H-padB-h).toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(h,.8).toFixed(1)}" rx="2" fill="#4a8cff" opacity=".75"><title>${p.d} ${p.j.toFixed(2)}</title></rect>`;
+      if(i%4===0) s+=`<text x="${(x+w/2).toFixed(1)}" y="${H-8}" text-anchor="middle">${p.d.slice(5)}</text>`;
+    });
+    $('rchart').innerHTML=s;
+  })();
 })();
 </script>
 </body>
