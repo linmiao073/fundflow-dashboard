@@ -30,6 +30,7 @@
       </div>
       <div class="card">
         <h2>题材主线榜<em>同花顺涨停板块 ・ 涨停家数 / 连板数</em></h2>
+        <div id="thWarn" class="note" style="color:#ffca6b;margin:0 0 8px"></div>
         <div class="th-list" id="themeList"></div>
         <div class="sub">子题材（归入上方主线）</div>
         <div class="chips" id="subThemes"></div>
@@ -86,6 +87,9 @@
     <span style="text-align:right">${hist[k]}家</span></div>`).join('') || '<div class="note">无数据</div>';
 
   // 题材榜
+  if (D.themesStale) {
+    $('thWarn').textContent = '题材数据为 ' + (D.themesDate||'') + '，未跟到当日行情（同花顺 token 失效或采集失败），下方为占位空数据。';
+  }
   const themes = D.themes||[];
   $('themeList').innerHTML = themes.map((x,i)=>{
     const reps=(x.reps||[]).slice(0,3).map(r=>esc(r.name||'')).filter(Boolean).join('、');

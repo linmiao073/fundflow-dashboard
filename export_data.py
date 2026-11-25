@@ -34,6 +34,8 @@ ths = load("ths_sentiment.json") or {}
 themes = ths.get("themes") or []
 board_theme = ths.get("boardTheme") or {}
 dt_boards = ths.get("dtBoards") or []
+ths_date = ths.get("date") or ""
+ths_stale = False
 
 # 情绪展示口径：炸板率取整、最高连板取整
 if sentiment:
@@ -51,6 +53,11 @@ if sentiment:
 dates = sorted({d for s in flow.values() for d in s})
 today = dates[-1]
 last30 = dates[-30:]
+
+# 题材数据必须与当日行情同日，否则不复用（避免拿旧题材当今日主线）
+if ths_date and ths_date != today.replace("-", ""):
+    ths_stale = True
+    themes, board_theme, dt_boards = [], {}, []
 
 # 一级行业合计（市场总口径）
 level1 = [n for n in flow if n in BLACK and n != "电力"]
@@ -356,6 +363,8 @@ payload = {
     "xuanxue": [{"code": x.get("code"), "name": x.get("name"), "themes": x.get("themes"),
                  "text": x.get("text")} for x in (ths.get("xuanxue") or [])],
     "dtBoards": dt_boards,
+    "themesDate": ths_date,
+    "themesStale": ths_stale,
     "stockConcepts": {k: v for k, v in (ths.get("stockConcepts") or {}).items()
                       if k in ({h.get("code") for h in ((sentiment or {}).get("high") or [])} |
                                {h.get("code") for h in ((sentiment or {}).get("high") or [])})},
