@@ -340,6 +340,39 @@ if os.path.exists(sub_path):
     with open(sub_path, encoding="utf-8") as f:
         sub = json.load(f)
 
+# 板块强度与龙头（由 scripts/build_board_strength.py 生成）
+bst = load("board_strength.json") or {}
+if bst.get("date") and str(bst.get("date")).replace("-", "") != str(today).replace("-", ""):
+    bst = {}
+board_strength = None
+if bst.get("groups"):
+    def _ld(x):
+        if not x:
+            return None
+        return {k: x.get(k) for k in ("code", "name", "lbc", "fbt", "fund", "zbc", "hybk", "by")}
+    board_strength = {
+        "date": bst.get("date"),
+        "ztTotal": bst.get("ztTotal"),
+        "marketMax": bst.get("marketMax"),
+        "summary": bst.get("summary"),
+        "groups": [{
+            "name": g["name"], "score": g.get("scoreU"), "zt": g.get("ztU"),
+            "lb": g.get("lbU"), "maxLbc": g.get("maxLbcP"), "maxAny": g.get("maxLbcU"),
+            "tag": g.get("tagU"),
+            "ladder": g.get("ladderU"), "topOwn": g.get("topOwn"),
+            "leader": _ld(g.get("leaderU")), "topTicket": _ld(g.get("topTicket")),
+            "subs": [s.get("name") for s in (g.get("subs") or [])],
+        } for g in bst["groups"]],
+        "hyBoards": [{"name": h["name"], "zt": h["zt"], "lb": h.get("lb"),
+                      "maxLbc": h.get("maxLbc"), "leader": _ld(h.get("leader"))}
+                     for h in (bst.get("hyBoards") or [])[:10]],
+        "topLadder": [{"h": L["h"], "n": L["n"],
+                       "stocks": [{"name": s["name"], "owner": s.get("owner"),
+                                   "fbt": s.get("fbt"), "zbc": s.get("zbc")}
+                                  for s in L["stocks"][:8]]}
+                      for L in (bst.get("topLadder") or [])],
+    }
+
 payload = {
     "generatedAt": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime("%Y-%m-%d %H:%M"),
     "date": today,
@@ -365,6 +398,7 @@ payload = {
     "dtBoards": dt_boards,
     "themesDate": ths_date,
     "themesStale": ths_stale,
+    "boardStrength": board_strength,
     "stockConcepts": {k: v for k, v in (ths.get("stockConcepts") or {}).items()
                       if k in ({h.get("code") for h in ((sentiment or {}).get("high") or [])} |
                                {h.get("code") for h in ((sentiment or {}).get("high") or [])})},

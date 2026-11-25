@@ -30,6 +30,9 @@ if ([int]$flowCount -lt 400) { Log "ERROR incomplete collection ($flowCount/496)
 # 同花顺题材（真实主线概念 / 玄学 / 跌停板块）+ 东财行业板块映射
 & python "$WS\scripts\collect_ths.py" 2>&1 | ForEach-Object { Log "ths: $_" }
 
+# 板块强度与龙头（题材 x 东财涨停池：龙头、梯队、强度指数）
+& python "$WS\scripts\build_board_strength.py" 2>&1 | ForEach-Object { Log "strength: $_" }
+
 # ETF 份额快照 + 交易所申赎历史 + 净申购聚合（一级市场口径）
 & node "$WS\scripts\collect_etf_share.js" 2>&1 | ForEach-Object { Log "share: $_" }
 $d0 = (Get-Date).AddDays(-12).ToString("yyyy-MM-dd")

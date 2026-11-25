@@ -38,6 +38,17 @@
       </div>
     </div>
 
+    <div class="card mb">
+      <h2>板块强度与龙头<em>强度指数＝涨停×3＋连板×2＋最高板×8＋三板以上×5</em></h2>
+      <div class="note" id="bsSum" style="margin:0 0 10px"></div>
+      <div class="bs-list" id="bsList"></div>
+      <div class="sub">高度归属（谁掌握高位板）</div>
+      <div class="bs-lad" id="bsLad"></div>
+      <div class="sub">行业板块龙头</div>
+      <div class="bs-hy" id="bsHy"></div>
+      <div class="note" id="bsNote"></div>
+    </div>
+
     <div class="grid g2">
       <div class="card">
         <h2>玄学 / 情绪性炒作<em>名称、生肖、谐音等，按公告原文标注</em></h2>
@@ -103,6 +114,48 @@
   const subs=D.subThemes||[];
   $('subThemes').innerHTML = subs.length ? subs.map(x=>`<span class="chip">${esc(x.theme)}<b>${x.zt}/${x.lb}</b></span>`).join('')
     : '<span class="chip">无</span>';
+
+  // 板块强度与龙头
+  (function(){
+    const B=D.boardStrength;
+    if(!B || !(B.groups||[]).length){
+      $('bsSum').textContent='板块强度数据未生成（scripts/build_board_strength.py）';
+      return;
+    }
+    $('bsSum').textContent = B.summary||'';
+    const gs=B.groups||[], mx=Math.max(...gs.map(g=>g.score||0),1);
+    const top0=(B.topLadder||[])[0];
+    if(top0 && top0.stocks && top0.stocks[0] && /通用票/.test(top0.stocks[0].owner||'')){
+      $('bsSum').textContent += ' 市场最高 '+top0.h+' 板 '+top0.stocks[0].name+' 所属 '+top0.stocks[0].owner.replace('通用票·','')+'，被多个题材收录，按通用票处理，不计入任何板块龙头。';
+    }
+    $('bsList').innerHTML = gs.map((g,i)=>{
+      const L=g.leader||{}, subs=g.subs||[];
+      const tagCls = g.tag==='主线'?'red':(g.tag==='次主线'?'':'blue');
+      return `<div class="bsr${i===0?' top':''}">
+        <div class="bsr-h"><span class="rk">${i+1}</span><b>${esc(g.name)}</b>
+          <span class="tag ${tagCls}">${esc(g.tag||'')}</span><i>${g.score}</i></div>
+        <div class="bsr-bar"><i style="width:${(g.score/mx*100).toFixed(0)}%"></i></div>
+        <div class="bsr-m">涨停 ${g.zt} · 连板 ${g.lb} · 三板以上 ${g.topOwn||0} 席${subs.length?' · 子题材 '+subs.length+' 个':''}</div>
+        <div class="bsr-l">龙头 <b>${esc(L.name||'-')}</b> ${L.lbc||'-'}板${L.fbt?(' · '+L.fbt+' 首封'):''}${L.fund!=null?(' · 封单 '+L.fund+'亿'):''}${L.zbc?(' · 炸板'+L.zbc+'次'):''}</div>
+        ${subs.length?`<div class="chips" style="margin-top:6px">${subs.map(x=>`<span class="chip">${esc(x)}</span>`).join('')}</div>`:''}
+      </div>`;
+    }).join('');
+
+    $('bsLad').innerHTML = (B.topLadder||[]).map(L=>`<div class="bl-row">
+      <span class="bl-h">${L.h}板</span>
+      <span class="bl-s">${(L.stocks||[]).map(x=>`${esc(x.name)}<em>${esc(x.owner||'—')}</em>`).join('')}</span>
+      <span class="bl-n">${L.n}家</span></div>`).join('') || '<div class="note">无 2 板以上个股</div>';
+
+    $('bsHy').innerHTML = (B.hyBoards||[]).slice(0,8).map((h,i)=>{
+      const L=h.leader||{};
+      return `<div class="bhy"><span class="rk">${i+1}</span>
+        <span><b>${esc(h.name)}</b><span class="bhy-n">${h.zt}涨停${h.lb?(' · '+h.lb+'连板'):''}</span></span>
+        <span class="bhy-l">${esc(L.name||'-')} ${L.lbc||1}板</span></div>`;
+    }).join('') || '<div class="note">无数据</div>';
+
+    $('bsNote').innerHTML = '龙头＝板块内连板最高 → 首封最早 → 封单最大，且个股所属行业须在该题材映射的行业里（避免 PCB 等通用票冒充龙头）；'
+      + '板块强度只比合并子题材后的主线组，同一只票不重复计数。数据：同花顺题材 + 东财涨停池（'+(B.date||'')+'）。';
+  })();
 
   // 玄学
   const xu=D.xuanxue||[];
