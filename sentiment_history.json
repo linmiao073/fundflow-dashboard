@@ -229,5 +229,16 @@
   "lianban": 30,
   "phase": "分歧",
   "score": 64
+ },
+ {
+  "date": "20261125",
+  "ztCount": 51,
+  "dtCount": 43,
+  "zbCount": 30,
+  "zbr": 37,
+  "maxLbc": 5,
+  "lianban": 14,
+  "phase": "分歧",
+  "score": 46
  }
 ]
