@@ -373,6 +373,23 @@ if bst.get("groups"):
                       for L in (bst.get("topLadder") or [])],
     }
 
+# 全市涨跌家数（按同花顺行业板块，scripts/collect_breadth.py 生成）
+brd = load("breadth.json") or {}
+if brd.get("date") and str(brd.get("date")).replace("-", "") != str(today).replace("-", ""):
+    brd = {}
+breadth_stock = None
+if brd.get("boards"):
+    def _b(x):
+        return {"name": x["name"], "up": x["up"], "down": x["down"],
+                "pct": x.get("pct"), "leader": x.get("leader"), "leaderPct": x.get("leaderPct")}
+    breadth_stock = {
+        "date": brd.get("date"), "up": brd.get("up"), "down": brd.get("down"),
+        "total": brd.get("total"), "upRatio": brd.get("upRatio"),
+        "upBoards": [_b(x) for x in (brd.get("upBoards") or [])[:10]],
+        "downBoards": [_b(x) for x in (brd.get("downBoards") or [])[:8]],
+        "nBoards": len(brd.get("boards") or []),
+    }
+
 payload = {
     "generatedAt": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime("%Y-%m-%d %H:%M"),
     "date": today,
@@ -398,6 +415,7 @@ payload = {
     "dtBoards": dt_boards,
     "themesDate": ths_date,
     "themesStale": ths_stale,
+    "breadthStock": breadth_stock,
     "boardStrength": board_strength,
     "stockConcepts": {k: v for k, v in (ths.get("stockConcepts") or {}).items()
                       if k in ({h.get("code") for h in ((sentiment or {}).get("high") or [])} |

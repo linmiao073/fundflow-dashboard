@@ -1,5 +1,5 @@
 window.DATA = {
- "generatedAt": "2026-11-25 15:36",
+ "generatedAt": "2026-11-25 22:28",
  "date": "2026-11-25",
  "market": [
   {
@@ -1620,6 +1620,162 @@ window.DATA = {
  ],
  "themesDate": "20261125",
  "themesStale": false,
+ "breadthStock": {
+  "date": "2026-11-25",
+  "up": 586,
+  "down": 4926,
+  "total": 5512,
+  "upRatio": 10.6,
+  "upBoards": [
+   {
+    "name": "化学制药",
+    "up": 50,
+    "down": 108,
+    "pct": -0.13,
+    "leader": "康芝药业",
+    "leaderPct": 20.05
+   },
+   {
+    "name": "中药",
+    "up": 39,
+    "down": 27,
+    "pct": 0.44,
+    "leader": "桂林三金",
+    "leaderPct": 10.03
+   },
+   {
+    "name": "零售",
+    "up": 34,
+    "down": 30,
+    "pct": 0.32,
+    "leader": "中央商场",
+    "leaderPct": 10.16
+   },
+   {
+    "name": "食品加工制造",
+    "up": 20,
+    "down": 46,
+    "pct": -0.85,
+    "leader": "桂发祥",
+    "leaderPct": 10.06
+   },
+   {
+    "name": "旅游及酒店",
+    "up": 19,
+    "down": 14,
+    "pct": 0.58,
+    "leader": "祥源文旅",
+    "leaderPct": 4.18
+   },
+   {
+    "name": "医药商业",
+    "up": 17,
+    "down": 14,
+    "pct": 0.87,
+    "leader": "ST海王",
+    "leaderPct": 10.28
+   },
+   {
+    "name": "银行",
+    "up": 17,
+    "down": 22,
+    "pct": -0.02,
+    "leader": "交通银行",
+    "leaderPct": 1.78
+   },
+   {
+    "name": "建筑装饰",
+    "up": 17,
+    "down": 125,
+    "pct": -3.13,
+    "leader": "全筑股份",
+    "leaderPct": 10.13
+   },
+   {
+    "name": "服装家纺",
+    "up": 15,
+    "down": 56,
+    "pct": -2.3,
+    "leader": "曼卡龙",
+    "leaderPct": 6.04
+   },
+   {
+    "name": "文化传媒",
+    "up": 14,
+    "down": 71,
+    "pct": -2.12,
+    "leader": "龙版传媒",
+    "leaderPct": 9.99
+   }
+  ],
+  "downBoards": [
+   {
+    "name": "汽车零部件",
+    "up": 13,
+    "down": 264,
+    "pct": -4.82,
+    "leader": "美晨科技",
+    "leaderPct": 10.41
+   },
+   {
+    "name": "通用设备",
+    "up": 9,
+    "down": 246,
+    "pct": -5.04,
+    "leader": "汇洲智能",
+    "leaderPct": 10.12
+   },
+   {
+    "name": "半导体",
+    "up": 3,
+    "down": 187,
+    "pct": -7.89,
+    "leader": "*ST闻泰",
+    "leaderPct": 5.93
+   },
+   {
+    "name": "专用设备",
+    "up": 10,
+    "down": 193,
+    "pct": -4.71,
+    "leader": "沈鼓集团",
+    "leaderPct": 4.29
+   },
+   {
+    "name": "化学制品",
+    "up": 7,
+    "down": 176,
+    "pct": -4.64,
+    "leader": "兴欣新材",
+    "leaderPct": 5.57
+   },
+   {
+    "name": "电网设备",
+    "up": 0,
+    "down": 138,
+    "pct": -4.92,
+    "leader": "国电南瑞",
+    "leaderPct": -0.48
+   },
+   {
+    "name": "软件开发",
+    "up": 7,
+    "down": 132,
+    "pct": -3.92,
+    "leader": "丝路视觉",
+    "leaderPct": 4.93
+   },
+   {
+    "name": "医疗器械",
+    "up": 14,
+    "down": 128,
+    "pct": -2.71,
+    "leader": "*ST益通",
+    "leaderPct": 2.73
+   }
+  ],
+  "nBoards": 90
+ },
  "boardStrength": null,
  "stockConcepts": {
   "002548": {

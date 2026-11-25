@@ -177,6 +177,14 @@ footer{margin-top:20px;color:var(--dim2);font-size:11.5px;line-height:1.8;border
 .bhy-n{color:var(--dim2);font-size:11px;margin-left:6px}
 .bhy-l{color:#c9d3e4;font-size:11.5px;text-align:right;white-space:nowrap}
 
+/* 全市涨跌家数 */
+.bw-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.bw-top div{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.bw-top b{display:block;font-size:22px;font-variant-numeric:tabular-nums;line-height:1.2}
+.bw-top span{font-size:11px;color:var(--dim2)}
+.bw-bar{height:10px;border-radius:6px;background:linear-gradient(90deg,#22b573,#22b573);overflow:hidden;margin-bottom:12px}
+.bw-bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,rgba(240,72,62,.6),#f0483e)}
+
 @media(max-width:640px){
   body{padding:14px 12px 48px}
   h1{font-size:18px}

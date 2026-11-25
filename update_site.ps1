@@ -33,6 +33,9 @@ if ([int]$flowCount -lt 400) { Log "ERROR incomplete collection ($flowCount/496)
 # 板块强度与龙头（题材 x 东财涨停池：龙头、梯队、强度指数）
 & python "$WS\scripts\build_board_strength.py" 2>&1 | ForEach-Object { Log "strength: $_" }
 
+# 全市涨跌家数（按板块，同花顺行业页）
+& python "$WS\scripts\collect_breadth.py" 2>&1 | ForEach-Object { Log "breadth: $_" }
+
 # ETF 份额快照 + 交易所申赎历史 + 净申购聚合（一级市场口径）
 & node "$WS\scripts\collect_etf_share.js" 2>&1 | ForEach-Object { Log "share: $_" }
 $d0 = (Get-Date).AddDays(-12).ToString("yyyy-MM-dd")

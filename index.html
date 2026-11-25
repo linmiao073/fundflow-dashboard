@@ -42,6 +42,27 @@
       </div>
     </div>
 
+    <div class="card mb">
+      <h2>全市涨跌家数<em id="bwDate">按板块（同花顺行业）</em></h2>
+      <div class="bw-top">
+        <div><b class="up" id="bwUpN">–</b><span>上涨家数</span></div>
+        <div><b class="dn" id="bwDnN">–</b><span>下跌家数</span></div>
+        <div><b id="bwRatio">–</b><span>上涨占比</span></div>
+      </div>
+      <div class="bw-bar"><i id="bwBar" style="width:0"></i></div>
+      <div class="grid g2" style="margin:0;gap:12px">
+        <div>
+          <div class="sub">红盘家数最多的板块</div>
+          <div class="rows" id="bwUpList"></div>
+        </div>
+        <div>
+          <div class="sub">绿盘家数最多的板块</div>
+          <div class="rows" id="bwDnList"></div>
+        </div>
+      </div>
+      <div class="note" id="bwNote"></div>
+    </div>
+
     <div class="grid g2">
       <div class="card"><h2>今日净流入 TOP12</h2><div class="rows" id="topRows"></div></div>
       <div class="card"><h2>今日净流出 TOP12</h2><div class="rows" id="botRows"></div></div>
@@ -59,6 +80,28 @@
   function kpi(k,v,s2,c){return `<div class="kpi"><div class="k">${k}</div><div class="v ${c||''}">${v}</div><div class="s">${esc(s2||'')}</div></div>`;}
 
   barLine($('mchart'), D.market||[]);
+
+  // 全市涨跌家数（按板块）
+  (function(){
+    const B=D.breadthStock;
+    if(!B || !(B.upBoards||[]).length){
+      $('bwNote').textContent='全市涨跌家数未采集到（scripts/collect_breadth.py；同花顺行业页不可达时会缺省）。';
+      return;
+    }
+    $('bwDate').textContent='按板块（同花顺 '+B.nBoards+' 个行业）';
+    $('bwUpN').textContent=B.up; $('bwDnN').textContent=B.down;
+    $('bwRatio').textContent=(B.upRatio==null?'–':B.upRatio+'%');
+    $('bwBar').style.width=(B.upRatio||0)+'%';
+    const uB=B.upBoards||[], dB=B.downBoards||[];
+    const umx=Math.max(...uB.map(x=>x.up),1), dmx=Math.max(...dB.map(x=>x.down),1);
+    $('bwUpList').innerHTML=uB.map(x=>`<div class="row"><div class="nm">${esc(x.name)}</div>
+      <div class="bar"><i class="up" style="width:${(x.up/umx*100).toFixed(0)}%"></i></div>
+      <div class="val up">${x.up}涨<span class="pct">${x.pct==null?'':(x.pct>0?'+':'')+x.pct+'%'}</span></div></div>`).join('');
+    $('bwDnList').innerHTML=dB.map(x=>`<div class="row"><div class="nm">${esc(x.name)}</div>
+      <div class="bar"><i class="dn" style="width:${(x.down/dmx*100).toFixed(0)}%"></i></div>
+      <div class="val dn">${x.down}跌<span class="pct">${x.pct==null?'':x.pct+'%'}</span></div></div>`).join('');
+    $('bwNote').textContent='口径：同花顺行业板块成分股涨跌家数（'+B.nBoards+' 个板块合计 '+B.up+' 涨 / '+B.down+' 跌），与涨停、跌停数分开统计。';
+  })();
 
   // 宽度
   const tot=(t.inCount||0)+(t.outCount||0)||1, pct=(t.inCount||0)/tot*100;
